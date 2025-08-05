@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  text-image-app:
+    build: .
+    container_name: text-image-app
+    ports:
+      - "3002:3002"
+    volumes:
+      # 映射图像存储目录到宿主机
+      - ./data/targets:/app/server/targets
+      # 映射数据库目录到宿主机
+      - ./data/database:/app/server/data
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3002/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  # 定义命名卷（可选）
+  targets_data:
+  database_data:
+
+# 如果需要使用命名卷而不是绑定挂载，可以使用以下配置：
+# services:
+#   text-image-app:
+#     # ... 其他配置保持不变
+#     volumes:
+#       - targets_data:/app/server/targets
+#       - database_data:/app/server/data
