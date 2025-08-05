@@ -18,6 +18,10 @@ dist-ssr
 # Trae AI configuration
 .trae/
 
+# Server data and targets directories
+server/data/
+server/targets/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
